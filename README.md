@@ -25,3 +25,21 @@ npm run dev
 - Skills: `src/components/Skills.astro`
 - Contact links: `src/components/Contact.astro`
 - Resume PDF: replace `public/resume.pdf` (regenerate via `python3 scripts/build_resume_pdf.py` if editing the source resume)
+- Challenge Me / games: `src/components/ChallengeMe.astro`
+
+## Live Clash Royale stats
+
+The Clash Royale card in Challenge Me shows live trophies/arena, refreshed every 30 minutes by
+`.github/workflows/clash-royale.yml`, which runs `scripts/fetch-clash-royale.mjs` and commits the
+result to `public/clash-royale.json`. The site fetches that JSON client-side.
+
+Setup (one-time):
+
+1. Create an API key at [developer.clashroyale.com](https://developer.clashroyale.com). Supercell's
+   API only allows fixed IPs, and GitHub Actions runners don't have one, so under **Allowed IP
+   Addresses** whitelist `45.79.218.79` — [RoyaleAPI's proxy](https://docs.royaleapi.com/proxy.html)
+   IP, not your own. Requests go through `proxy.royaleapi.dev` instead of `api.clashroyale.com`.
+2. In this repo: **Settings → Secrets and variables → Actions → New repository secret**, name
+   `CR_API_TOKEN`, paste the key value.
+3. Until the secret is set, the workflow skips itself on schedule (no failing runs/emails) and the
+   card just shows the friend-invite button with no stats row.

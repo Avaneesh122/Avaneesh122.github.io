@@ -18,16 +18,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check for CR_API_TOKEN secret
+        id: check
+        env:
+          CR_API_TOKEN: ${{ secrets.CR_API_TOKEN }}
+        run: |
+          if [ -z "$CR_API_TOKEN" ]; then
+            echo "CR_API_TOKEN secret is not set yet — skipping this run. See README for setup." >&2
+            echo "has_token=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_token=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/setup-node@v4
+        if: steps.check.outputs.has_token == 'true'
         with:
           node-version: 22
 
       - name: Fetch stats
+        if: steps.check.outputs.has_token == 'true'
         env:
           CR_API_TOKEN: ${{ secrets.CR_API_TOKEN }}
         run: node scripts/fetch-clash-royale.mjs
 
       - name: Commit if changed
+        if: steps.check.outputs.has_token == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
