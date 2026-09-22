@@ -1,4 +1,9 @@
 ---
+interface Rank {
+  name: string;
+  division: number;
+}
+
 interface Game {
   name: string;
   tag: string | null;
@@ -6,7 +11,48 @@ interface Game {
   platform: string;
   cta: string;
   href: string | null;
+  copyValue: string | null;
+  rank: Rank | null;
 }
+
+const RANK_COLORS: Record<string, string> = {
+  Rookie: "#8a8a86",
+  Bronze: "#c17a45",
+  Silver: "#b9bec4",
+  Gold: "#e0b23c",
+  Platinum: "#4fd1c5",
+  Diamond: "#5aa9ff",
+  Master: "#c77dff",
+};
+
+function toRoman(n: number): string {
+  const table: [number, string][] = [
+    [10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"],
+  ];
+  let remaining = n;
+  let out = "";
+  for (const [value, symbol] of table) {
+    while (remaining >= value) {
+      out += symbol;
+      remaining -= value;
+    }
+  }
+  return out || String(n);
+}
+
+const BADGE_R = 32;
+const RING_R = 26;
+const TICK_INNER = 22;
+const TICK_COUNT = 12;
+const rankTicks = Array.from({ length: TICK_COUNT }, (_, i) => {
+  const angle = (i / TICK_COUNT) * 2 * Math.PI - Math.PI / 2;
+  return {
+    x1: BADGE_R + TICK_INNER * Math.cos(angle),
+    y1: BADGE_R + TICK_INNER * Math.sin(angle),
+    x2: BADGE_R + RING_R * Math.cos(angle),
+    y2: BADGE_R + RING_R * Math.sin(angle),
+  };
+});
 
 const games: Game[] = [
   {
@@ -16,6 +62,18 @@ const games: Game[] = [
     platform: "Mobile",
     cta: "Add Friend",
     href: "https://link.clashroyale.com/invite/friend/en?tag=2LUQ22P2C&token=axtw3twa&platform=iOS&m=0",
+    copyValue: null,
+    rank: null,
+  },
+  {
+    name: "Yu-Gi-Oh! Master Duel",
+    tag: "683-920-814",
+    tagline: "Add me and let's duel.",
+    platform: "Mobile / PC",
+    cta: "Copy Friend ID",
+    href: null,
+    copyValue: "683-920-814",
+    rank: { name: "Diamond", division: 4 },
   },
 ];
 ---
@@ -35,10 +93,40 @@ const games: Game[] = [
         </div>
         <h3 class="g-name">{g.name}</h3>
         <p class="g-tagline">{g.tagline}</p>
+        {g.rank && (
+          <div class="rank-row">
+            <svg
+              class="rank-badge"
+              viewBox="0 0 64 64"
+              aria-hidden="true"
+              style={`--gem: ${RANK_COLORS[g.rank.name] ?? "var(--accent)"}`}
+            >
+              <circle cx="32" cy="32" r="30" class="rb-outer" />
+              <circle cx="32" cy="32" r={RING_R} class="rb-ring" />
+              {rankTicks.map((t) => (
+                <line x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} class="rb-tick" />
+              ))}
+              <polygon points="32,4 37,13 27,13" class="rb-spike" />
+              <text x="32" y="39" text-anchor="middle" class="rb-num">
+                {toRoman(g.rank.division)}
+              </text>
+            </svg>
+            <span class="rank-meta">
+              <span class="rank-label mono">Ranked</span>
+              <span class="rank-text">
+                {g.rank.name} {toRoman(g.rank.division)}
+              </span>
+            </span>
+          </div>
+        )}
         {g.href ? (
           <a class="btn btn-solid g-cta" href={g.href} target="_blank" rel="noreferrer">
             {g.cta} &nbsp;→
           </a>
+        ) : g.copyValue ? (
+          <button class="btn g-cta g-copy" type="button" data-copy={g.copyValue} data-copy-label={g.cta}>
+            {g.cta}
+          </button>
         ) : (
           <span class="btn g-cta g-cta-disabled" aria-disabled="true">
             {g.cta} coming soon
@@ -129,8 +217,80 @@ const games: Game[] = [
     flex: 1;
   }
 
+  .rank-row {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin: 0 0 1.4rem;
+  }
+
+  .rank-badge {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+  }
+
+  .rb-outer {
+    fill: color-mix(in srgb, var(--gem) 10%, var(--bg-raised));
+    stroke: var(--line);
+    stroke-width: 1;
+  }
+
+  .rb-ring {
+    fill: none;
+    stroke: var(--gem);
+    stroke-width: 1.5;
+  }
+
+  .rb-tick {
+    stroke: color-mix(in srgb, var(--gem) 60%, transparent);
+    stroke-width: 1.5;
+  }
+
+  .rb-spike {
+    fill: var(--gem);
+  }
+
+  .rb-num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    fill: var(--gem);
+  }
+
+  .rank-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .rank-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+  }
+
+  .rank-text {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--fg);
+  }
+
   .g-cta {
     align-self: flex-start;
+  }
+
+  button.g-cta {
+    font-family: var(--font-mono);
+    cursor: pointer;
+    background: transparent;
+  }
+
+  button.g-copy.is-copied {
+    border-color: var(--accent);
+    color: var(--accent);
   }
 
   .g-cta-disabled {
@@ -143,3 +303,25 @@ const games: Game[] = [
     color: var(--fg-faint);
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
+    const value = btn.dataset.copy;
+    const label = btn.dataset.copyLabel ?? btn.textContent ?? "Copy";
+    if (!value) return;
+
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(value);
+        btn.textContent = "Copied!";
+        btn.classList.add("is-copied");
+        setTimeout(() => {
+          btn.textContent = label;
+          btn.classList.remove("is-copied");
+        }, 1600);
+      } catch {
+        btn.textContent = value;
+      }
+    });
+  });
+</script>
