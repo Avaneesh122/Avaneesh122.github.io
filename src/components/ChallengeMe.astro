@@ -1,6 +1,7 @@
 ---
 interface Game {
   name: string;
+  tag: string | null;
   tagline: string;
   platform: string;
   cta: string;
@@ -10,10 +11,11 @@ interface Game {
 const games: Game[] = [
   {
     name: "Clash Royale",
+    tag: "#2LUQ22P2C",
     tagline: "Add me and let's battle.",
     platform: "Mobile",
     cta: "Add Friend",
-    href: null,
+    href: "https://link.clashroyale.com/invite/friend/en?tag=2LUQ22P2C&token=axtw3twa&platform=iOS&m=0",
   },
 ];
 ---
@@ -29,6 +31,7 @@ const games: Game[] = [
       <div class="g-card">
         <div class="g-top mono">
           <span class="g-platform">{g.platform}</span>
+          {g.tag && <span class="g-tag">{g.tag}</span>}
         </div>
         <h3 class="g-name">{g.name}</h3>
         <p class="g-tagline">{g.tagline}</p>
@@ -103,6 +106,12 @@ const games: Game[] = [
     color: var(--fg-faint);
     border: 1px solid var(--line);
     padding: 0.25em 0.6em;
+  }
+
+  .g-tag {
+    font-size: 0.72rem;
+    color: var(--fg-faint);
+    letter-spacing: 0.03em;
   }
 
   .g-name {
