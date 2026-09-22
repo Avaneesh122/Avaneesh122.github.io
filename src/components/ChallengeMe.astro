@@ -1,0 +1,136 @@
+---
+interface Game {
+  name: string;
+  tagline: string;
+  platform: string;
+  cta: string;
+  href: string | null;
+}
+
+const games: Game[] = [
+  {
+    name: "Clash Royale",
+    tagline: "Add me and let's battle.",
+    platform: "Mobile",
+    cta: "Add Friend",
+    href: null,
+  },
+];
+---
+
+<section id="challenge" class="challenge shell">
+  <div class="edge-pad challenge-head">
+    <span class="section-label">05 / Challenge Me</span>
+    <span class="mono challenge-note">Games I actually play — add me, let's run it back</span>
+  </div>
+  <div class="rule-dim"></div>
+  <div class="edge-pad challenge-grid">
+    {games.map((g) => (
+      <div class="g-card">
+        <div class="g-top mono">
+          <span class="g-platform">{g.platform}</span>
+        </div>
+        <h3 class="g-name">{g.name}</h3>
+        <p class="g-tagline">{g.tagline}</p>
+        {g.href ? (
+          <a class="btn btn-solid g-cta" href={g.href} target="_blank" rel="noreferrer">
+            {g.cta} &nbsp;→
+          </a>
+        ) : (
+          <span class="btn g-cta g-cta-disabled" aria-disabled="true">
+            {g.cta} coming soon
+          </span>
+        )}
+      </div>
+    ))}
+  </div>
+  <div class="rule"></div>
+</section>
+
+<style>
+  .challenge {
+    padding-top: clamp(3rem, 7vw, 5rem);
+  }
+
+  .challenge-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.6rem;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .challenge-note {
+    font-size: 0.76rem;
+    color: var(--fg-dim);
+  }
+
+  .challenge-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--line);
+    padding-top: 1.6rem;
+    padding-bottom: clamp(3rem, 7vw, 5rem);
+  }
+
+  @media (min-width: 640px) {
+    .challenge-grid {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+  }
+
+  .g-card {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.6rem, 3vw, 2rem);
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+  }
+
+  .g-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.4rem;
+  }
+
+  .g-platform {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+    border: 1px solid var(--line);
+    padding: 0.25em 0.6em;
+  }
+
+  .g-name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.3rem;
+    margin: 0 0 0.6rem;
+  }
+
+  .g-tagline {
+    color: var(--fg-dim);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 1.6rem;
+    flex: 1;
+  }
+
+  .g-cta {
+    align-self: flex-start;
+  }
+
+  .g-cta-disabled {
+    color: var(--fg-faint);
+    cursor: default;
+  }
+
+  .g-cta-disabled:hover {
+    border-color: var(--line);
+    color: var(--fg-faint);
+  }
+</style>
