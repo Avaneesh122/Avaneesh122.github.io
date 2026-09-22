@@ -4,6 +4,11 @@ interface Rank {
   division: number;
 }
 
+interface EndgameStat {
+  label: string;
+  value: string;
+}
+
 interface Game {
   name: string;
   tag: string | null;
@@ -14,6 +19,7 @@ interface Game {
   copyValue: string | null;
   rank: Rank | null;
   liveStats: "clash-royale" | null;
+  endgame: EndgameStat[] | null;
 }
 
 const RANK_COLORS: Record<string, string> = {
@@ -66,6 +72,7 @@ const games: Game[] = [
     copyValue: null,
     rank: null,
     liveStats: "clash-royale",
+    endgame: null,
   },
   {
     name: "Yu-Gi-Oh! Master Duel",
@@ -77,6 +84,24 @@ const games: Game[] = [
     copyValue: "683-920-814",
     rank: { name: "Diamond", division: 4 },
     liveStats: null,
+    endgame: null,
+  },
+  {
+    name: "Honkai: Star Rail",
+    tag: "806520857 · Asia",
+    tagline: "Add me and let's clear some endgame.",
+    platform: "Mobile / PC / PS5",
+    cta: "Copy UID",
+    href: null,
+    copyValue: "806520857",
+    rank: null,
+    liveStats: null,
+    endgame: [
+      { label: "Memory of Chaos", value: "36 / 36 ★" },
+      { label: "Pure Fiction", value: "12 / 12 ★" },
+      { label: "Apocalyptic Shadow", value: "12 / 12 ★" },
+      { label: "Anomaly Arbitration", value: "King ★3 · Knight ★9" },
+    ],
   },
 ];
 ---
@@ -136,6 +161,16 @@ const games: Game[] = [
               <span class="rank-text" id="cr-trophies">—</span>
               <span class="cr-arena mono" id="cr-arena"></span>
             </span>
+          </div>
+        )}
+        {g.endgame && (
+          <div class="endgame-grid">
+            {g.endgame.map((stat) => (
+              <div class="eg-cell">
+                <span class="eg-label mono">{stat.label}</span>
+                <span class="eg-value">{stat.value}</span>
+              </div>
+            ))}
           </div>
         )}
         {g.href ? (
@@ -312,6 +347,42 @@ const games: Game[] = [
 
   #cr-stats[data-state="error"] {
     display: none;
+  }
+
+  .endgame-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin: 0 0 1.6rem;
+  }
+
+  .eg-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.7rem 0.8rem;
+    background: var(--bg-raised);
+  }
+
+  .eg-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    color: var(--fg-faint);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .eg-value {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.92rem;
+    color: var(--accent);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .g-cta {
