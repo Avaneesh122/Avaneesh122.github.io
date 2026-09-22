@@ -8,9 +8,12 @@ const DISCORD_ID = "527754865540202498";
       <span class="np-eq" id="np-eq" aria-hidden="true"><span></span><span></span><span></span></span>
       Now Playing
     </div>
-    <a class="np-track mono np-idle" id="np-track" href="#" target="_blank" rel="noreferrer">
+    <a class="np-track np-idle" id="np-track" href="#" target="_blank" rel="noreferrer">
       <img class="np-art" id="np-art" alt="" hidden />
-      <span id="np-text">Checking Spotify…</span>
+      <span class="np-meta">
+        <span class="np-song" id="np-song">Checking Spotify…</span>
+        <span class="np-artist mono" id="np-artist"></span>
+      </span>
     </a>
   </div>
   <div class="rule-dim"></div>
@@ -18,23 +21,23 @@ const DISCORD_ID = "527754865540202498";
 
 <style>
   .now-playing {
-    padding-top: 0.9rem;
-    padding-bottom: 0.9rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 
   .np-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
   }
 
   .np-label {
     display: flex;
     align-items: center;
-    gap: 0.7em;
-    font-size: 0.72rem;
+    gap: 0.8em;
+    font-size: 0.78rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--fg-faint);
@@ -44,13 +47,13 @@ const DISCORD_ID = "527754865540202498";
   .np-eq {
     display: inline-flex;
     align-items: flex-end;
-    gap: 2px;
-    height: 10px;
+    gap: 3px;
+    height: 16px;
   }
 
   .np-eq span {
-    width: 2px;
-    height: 4px;
+    width: 3px;
+    height: 5px;
     background: var(--fg-faint);
     transition: background 0.2s ease;
   }
@@ -75,18 +78,17 @@ const DISCORD_ID = "527754865540202498";
   @keyframes np-bounce {
     0%,
     100% {
-      height: 3px;
+      height: 4px;
     }
     50% {
-      height: 10px;
+      height: 16px;
     }
   }
 
   .np-track {
     display: flex;
     align-items: center;
-    gap: 0.7em;
-    font-size: 0.8rem;
+    gap: 1rem;
     color: var(--fg-dim);
     text-decoration: none;
     max-width: 100%;
@@ -103,14 +105,37 @@ const DISCORD_ID = "527754865540202498";
   }
 
   .np-art {
-    width: 22px;
-    height: 22px;
+    width: 48px;
+    height: 48px;
     object-fit: cover;
     flex-shrink: 0;
     border: 1px solid var(--line);
   }
 
-  #np-text {
+  .np-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    overflow: hidden;
+  }
+
+  .np-song {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--fg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .np-track:not(.np-idle):hover .np-song {
+    color: var(--accent);
+  }
+
+  .np-artist {
+    font-size: 0.8rem;
+    color: var(--fg-dim);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -130,12 +155,13 @@ const DISCORD_ID = "527754865540202498";
   const POLL_MS = 20000;
 
   const trackEl = document.getElementById("np-track");
-  const textEl = document.getElementById("np-text");
+  const songEl = document.getElementById("np-song");
+  const artistEl = document.getElementById("np-artist");
   const artEl = document.getElementById("np-art");
   const eqEl = document.getElementById("np-eq");
 
   async function refresh() {
-    if (!trackEl || !textEl || !artEl || !eqEl) return;
+    if (!trackEl || !songEl || !artistEl || !artEl || !eqEl) return;
     try {
       const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`, {
         cache: "no-store",
@@ -146,7 +172,8 @@ const DISCORD_ID = "527754865540202498";
       const data = json.data;
       if (data.listening_to_spotify && data.spotify) {
         const { song, artist, album_art_url, track_id } = data.spotify;
-        textEl.textContent = `${song} — ${artist}`;
+        songEl.textContent = song;
+        artistEl.textContent = artist;
         artEl.src = album_art_url;
         artEl.hidden = false;
         trackEl.href = `https://open.spotify.com/track/${track_id}`;
@@ -161,8 +188,9 @@ const DISCORD_ID = "527754865540202498";
   }
 
   function setIdle() {
-    if (!trackEl || !textEl || !artEl || !eqEl) return;
-    textEl.textContent = "Not listening right now";
+    if (!trackEl || !songEl || !artistEl || !artEl || !eqEl) return;
+    songEl.textContent = "Not listening right now";
+    artistEl.textContent = "";
     artEl.hidden = true;
     trackEl.removeAttribute("href");
     trackEl.classList.add("np-idle");
