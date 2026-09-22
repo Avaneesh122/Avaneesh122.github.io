@@ -1,0 +1,47 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer shell">
+  <div class="edge-pad footer-inner mono">
+    <span>© {year} Avaneesh Bhoite</span>
+    <span class="footer-mid">Built with Astro · Hosted on GitHub Pages</span>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<style>
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem 1.6rem;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.6rem;
+    padding-bottom: 1.6rem;
+    font-size: 0.74rem;
+    color: var(--fg-dim);
+  }
+
+  .footer-inner a {
+    color: var(--fg-dim);
+    text-decoration: none;
+  }
+
+  .footer-inner a:hover {
+    color: var(--accent);
+  }
+
+  .footer-mid {
+    order: 3;
+    width: 100%;
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .footer-mid {
+      order: 0;
+      width: auto;
+    }
+  }
+</style>

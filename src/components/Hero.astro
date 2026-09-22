@@ -1,0 +1,144 @@
+---
+const meta = [
+  { k: "Role", v: "ML & Cloud Engineer" },
+  { k: "Based", v: "Atlanta, GA" },
+  { k: "Coords", v: "33.749° N / 84.388° W" },
+  { k: "Focus", v: "Applied ML · Privacy · Infra" },
+];
+---
+
+<section id="top" class="hero shell">
+  <div class="hero-grid edge-pad">
+    <div class="hero-main">
+      <p class="mono kicker">
+        <span class="dot"></span> avaneesh_bhoite.init() — MS CS @ Emory University
+      </p>
+      <h1 class="name">
+        Avaneesh<br />Bhoite
+      </h1>
+      <p class="deck">
+        I build machine learning systems and the cloud infrastructure that
+        has to carry them into production — from diffusion-model privacy
+        attacks to serverless pipelines running at enterprise scale.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-solid" href="#work">View selected work &nbsp;→</a>
+        <a class="btn" href="/resume.pdf" target="_blank">Resume (PDF)</a>
+      </div>
+    </div>
+
+    <aside class="hero-meta mono">
+      {meta.map((m) => (
+        <div class="meta-row">
+          <span class="meta-k">{m.k}</span>
+          <span class="meta-v">{m.v}</span>
+        </div>
+      ))}
+      <div class="meta-row meta-status">
+        <span class="meta-k">Status</span>
+        <span class="meta-v"><span class="dot"></span> Open to ML/SWE roles</span>
+      </div>
+    </aside>
+  </div>
+  <div class="rule"></div>
+</section>
+
+<style>
+  .hero {
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 5vw, 3rem);
+    padding-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  @media (min-width: 860px) {
+    .hero-grid {
+      grid-template-columns: 7fr 3fr;
+      align-items: end;
+    }
+  }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    color: var(--fg-dim);
+    margin: 0 0 1.4rem;
+  }
+
+  .kicker .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+  }
+
+  .name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(3.2rem, 9.5vw, 7.2rem);
+    line-height: 0.94;
+    letter-spacing: -0.02em;
+    margin: 0 0 1.6rem;
+  }
+
+  .deck {
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    line-height: 1.55;
+    color: var(--fg-dim);
+    max-width: 46ch;
+    margin: 0 0 2.2rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    border-left: 1px solid var(--line);
+    padding-left: clamp(1.2rem, 2vw, 1.8rem);
+  }
+
+  .meta-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+  }
+
+  .meta-k {
+    color: var(--fg-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.68rem;
+  }
+
+  .meta-v {
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  .meta-status .meta-v {
+    color: var(--accent);
+  }
+
+  .meta-status .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+</style>

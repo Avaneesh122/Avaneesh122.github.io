@@ -1,0 +1,107 @@
+---
+---
+
+<section id="about" class="about shell">
+  <div class="edge-pad about-grid">
+    <div class="about-index">
+      <span class="section-label">01 / About</span>
+      <span class="mono big-index" aria-hidden="true">01</span>
+    </div>
+    <div class="about-body">
+      <p class="lede">
+        Three threads run through what I build: models that touch real
+        patients, systems that make AI teams faster, and the standing
+        question of whether either can be trusted.
+      </p>
+      <p>
+        At Emory, I split my time between coursework in information
+        retrieval and AI systems and a research project probing how easily
+        diffusion models trained on tabular genomics data leak the patients
+        inside them — the same models increasingly used to synthesize
+        medical datasets that are assumed to be safe. Before that, at TCS,
+        I replaced a 100-person team's 24–48 hour manual review process
+        with a serverless multi-agent pipeline on AWS — the unglamorous,
+        load-bearing kind of AI work that doesn't make headlines but has to
+        actually ship, on someone else's production timeline.
+      </p>
+      <p>
+        I'm drawn to problems that sit at the boundary of the model and the
+        system around it, where accuracy on a benchmark matters less than
+        whether the thing can be trusted with real data, in production,
+        under someone else's SLA.
+      </p>
+      <div class="focus-tags">
+        <span class="tag">Applied ML</span>
+        <span class="tag">Privacy &amp; Membership Inference</span>
+        <span class="tag">Medical Imaging</span>
+        <span class="tag">Serverless / AWS</span>
+        <span class="tag">Agentic Systems</span>
+      </div>
+    </div>
+  </div>
+  <div class="rule"></div>
+</section>
+
+<style>
+  .about {
+    padding: clamp(3rem, 7vw, 5rem) 0;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 860px) {
+    .about-grid {
+      grid-template-columns: 3fr 9fr;
+    }
+  }
+
+  .about-index {
+    position: relative;
+  }
+
+  .big-index {
+    display: none;
+  }
+
+  @media (min-width: 860px) {
+    .big-index {
+      display: block;
+      font-size: 8rem;
+      line-height: 1;
+      color: var(--line);
+      margin-top: 0.4rem;
+      user-select: none;
+    }
+  }
+
+  .about-body {
+    max-width: 68ch;
+  }
+
+  .lede {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+    line-height: 1.4;
+    color: var(--fg);
+    margin: 0 0 1.4rem;
+  }
+
+  .about-body p {
+    color: var(--fg-dim);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0 0 1.2rem;
+  }
+
+  .focus-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.8rem;
+  }
+</style>

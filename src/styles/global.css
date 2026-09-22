@@ -1,0 +1,176 @@
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "@fontsource/hanken-grotesk/400.css";
+@import "@fontsource/hanken-grotesk/500.css";
+
+:root {
+  --bg: #0a0b09;
+  --bg-raised: #121310;
+  --line: rgba(240, 238, 230, 0.14);
+  --line-dim: rgba(240, 238, 230, 0.07);
+  --fg: #f2efe7;
+  --fg-dim: #9b9c92;
+  --fg-faint: #63645d;
+  --accent: #ff5a1f;
+  --accent-dim: rgba(255, 90, 31, 0.14);
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Hanken Grotesk", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --col-gap: 1px;
+  --edge: clamp(1.25rem, 4vw, 3rem);
+  --maxw: 1320px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--accent);
+  color: #0a0b09;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* ---- grid shell ---- */
+
+.shell {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  position: relative;
+}
+
+.shell::before,
+.shell::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line-dim);
+}
+
+.edge-pad {
+  padding-left: var(--edge);
+  padding-right: var(--edge);
+}
+
+.rule {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 0;
+}
+
+.rule-dim {
+  border: none;
+  border-top: 1px solid var(--line-dim);
+  margin: 0;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+
+.section-label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--fg-dim);
+  border: 1px solid var(--line);
+  padding: 0.3em 0.6em;
+  white-space: nowrap;
+}
+
+.btn {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.85em 1.3em;
+  border: 1px solid var(--line);
+  color: var(--fg);
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-solid {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0a0b09;
+}
+
+.btn-solid:hover {
+  background: transparent;
+  color: var(--accent);
+}
+
+.crosshair {
+  position: relative;
+}
+
+.crosshair::before,
+.crosshair::after {
+  content: "";
+  position: absolute;
+  background: var(--fg-faint);
+}
+
+@media (max-width: 720px) {
+  html {
+    font-size: 15px;
+  }
+}

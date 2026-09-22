@@ -1,0 +1,111 @@
+---
+interface Props {
+  index: string;
+  title: string;
+  description: string;
+  tags: string[];
+  href: string;
+  lang: string;
+}
+
+const { index, title, description, tags, href, lang } = Astro.props;
+---
+
+<a class="card" href={href} target="_blank" rel="noreferrer">
+  <div class="card-top mono">
+    <span class="card-index">{index}</span>
+    <span class="card-lang">
+      <span class="lang-dot"></span>
+      {lang}
+    </span>
+  </div>
+  <h3 class="card-title">{title}</h3>
+  <p class="card-desc">{description}</p>
+  <div class="card-bottom">
+    <div class="card-tags">
+      {tags.map((t) => <span class="tag">{t}</span>)}
+    </div>
+    <span class="card-link mono">View repo →</span>
+  </div>
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.6rem, 3vw, 2.4rem);
+    text-decoration: none;
+    color: var(--fg);
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+    transition: border-color 0.18s ease, transform 0.18s ease;
+    position: relative;
+    min-height: 100%;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+  }
+
+  .card:hover .card-link {
+    color: var(--accent);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    color: var(--fg-dim);
+    letter-spacing: 0.06em;
+    margin-bottom: 1.6rem;
+  }
+
+  .card-lang {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  .lang-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .card-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.25rem, 2vw, 1.55rem);
+    line-height: 1.28;
+    margin: 0 0 0.9rem;
+  }
+
+  .card-desc {
+    color: var(--fg-dim);
+    font-size: 0.94rem;
+    line-height: 1.65;
+    margin: 0 0 1.8rem;
+    flex: 1;
+  }
+
+  .card-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin-top: auto;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .card-link {
+    font-size: 0.78rem;
+    color: var(--fg-dim);
+    transition: color 0.15s ease;
+  }
+</style>

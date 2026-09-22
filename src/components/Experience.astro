@@ -1,0 +1,144 @@
+---
+const roles = [
+  {
+    date: "05.26 — 08.26",
+    role: "Agentic AI Intern",
+    org: "Tata Consultancy Services (TCS)",
+    loc: "Edison, NJ",
+    desc: "Designed and built SuPRvisor, a serverless multi-agent AI platform on AWS Lambda, DynamoDB, S3, SQS, and Amazon Bedrock that automated semantic SQL review, risk assessment, and executive reporting for a 50–100 person team — cutting per-ticket review time from 24–48 hours to 5–10 minutes.",
+    tags: ["AWS Lambda", "Amazon Bedrock", "DynamoDB", "Multi-Agent"],
+  },
+  {
+    date: "09.25 — Present",
+    role: "Research Intern — Oral Cavity Cancer Classification",
+    org: "Emory University",
+    loc: "Atlanta, GA",
+    desc: "Built an end-to-end pipeline extracting features from gigapixel whole-slide pathology images (up to 8GB per slide) to classify tumor patches, with pixel-level label generation and interpretability overlays for visual verification.",
+    tags: ["h5py", "NumPy", "Whole-Slide Imaging"],
+  },
+  {
+    date: "01.24 — 07.24",
+    role: "Software Development Engineer",
+    org: "FairShare IT Services",
+    loc: "Pune, India",
+    desc: "Built predictive models forecasting prices across 100+ stocks (96% R², 90% directional accuracy in backtesting) and automated the scraping and screening pipeline that fed them.",
+    tags: ["TensorFlow", "Pandas", "scikit-learn"],
+  },
+  {
+    date: "01.24 — 06.24",
+    role: "Team Leader — Unity ML-Agents",
+    org: "Independent Research",
+    loc: "Pune, India",
+    desc: "Led a team building a racing game where NPCs adapted to player behavior via reinforcement learning. Published at IEEE 2nd WCONF 2024.",
+    tags: ["Reinforcement Learning", "Unity ML-Agents"],
+  },
+  {
+    date: "07.22 — 03.23",
+    role: "Research Co-Developer",
+    org: "Skoda Auto Volkswagen",
+    loc: "Pune, India",
+    desc: "Built interactive training software and KPI-driven instructional modules adopted by 6 service managers, extending training to 240+ employees.",
+    tags: ["Instructional Design", "KPI Tooling"],
+  },
+];
+---
+
+<section id="experience" class="exp shell">
+  <div class="edge-pad exp-head">
+    <span class="section-label">03 / Experience</span>
+  </div>
+  <div class="rule-dim"></div>
+  <div class="edge-pad exp-list">
+    {roles.map((r) => (
+      <div class="exp-row">
+        <div class="exp-date mono">{r.date}</div>
+        <div class="exp-content">
+          <div class="exp-title-line">
+            <h3 class="exp-role">{r.role}</h3>
+            <span class="exp-org mono">{r.org} · {r.loc}</span>
+          </div>
+          <p class="exp-desc">{r.desc}</p>
+          <div class="exp-tags">
+            {r.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+  <div class="rule"></div>
+</section>
+
+<style>
+  .exp {
+    padding-top: clamp(3rem, 7vw, 5rem);
+  }
+
+  .exp-head {
+    padding-bottom: 1.6rem;
+  }
+
+  .exp-list {
+    padding-top: 0.5rem;
+    padding-bottom: clamp(3rem, 7vw, 5rem);
+  }
+
+  .exp-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--line-dim);
+  }
+
+  .exp-row:last-child {
+    border-bottom: none;
+  }
+
+  @media (min-width: 760px) {
+    .exp-row {
+      grid-template-columns: 2fr 10fr;
+      gap: 2rem;
+    }
+  }
+
+  .exp-date {
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    padding-top: 0.3rem;
+  }
+
+  .exp-title-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem 1rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .exp-role {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.15rem;
+    margin: 0;
+  }
+
+  .exp-org {
+    font-size: 0.76rem;
+    color: var(--fg-dim);
+  }
+
+  .exp-desc {
+    color: var(--fg-dim);
+    font-size: 0.94rem;
+    line-height: 1.65;
+    max-width: 70ch;
+    margin: 0 0 1rem;
+  }
+
+  .exp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+</style>

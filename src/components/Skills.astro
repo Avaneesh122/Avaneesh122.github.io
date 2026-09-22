@@ -1,0 +1,89 @@
+---
+const groups = [
+  {
+    label: "ML & AI",
+    items: ["Generative AI", "LLMs", "Vector Databases", "Prompt Engineering", "Diffusion Models"],
+  },
+  {
+    label: "Libraries",
+    items: ["TensorFlow", "scikit-learn", "Pandas", "NumPy", "PyTerrier", "Seaborn", "Django", "Flask"],
+  },
+  {
+    label: "Cloud & Infra",
+    items: ["AWS Lambda", "DynamoDB", "S3", "SQS", "Amazon Bedrock", "Linux"],
+  },
+  {
+    label: "Languages & DBs",
+    items: ["Python", "JavaScript", "Java", "Node.js", "React.js", "MySQL", "MongoDB"],
+  },
+];
+---
+
+<section id="skills" class="skills shell">
+  <div class="edge-pad skills-head">
+    <span class="section-label">04 / Toolset</span>
+  </div>
+  <div class="rule-dim"></div>
+  <div class="skills-grid edge-pad">
+    {groups.map((g) => (
+      <div class="skills-col">
+        <h4 class="mono skills-label">{g.label}</h4>
+        <ul class="skills-items">
+          {g.items.map((i) => <li>{i}</li>)}
+        </ul>
+      </div>
+    ))}
+  </div>
+  <div class="rule"></div>
+</section>
+
+<style>
+  .skills {
+    padding-top: clamp(3rem, 7vw, 5rem);
+  }
+
+  .skills-head {
+    padding-bottom: 1.6rem;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-top: 2.2rem;
+    padding-bottom: clamp(3rem, 7vw, 5rem);
+  }
+
+  @media (min-width: 640px) {
+    .skills-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 980px) {
+    .skills-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .skills-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1.1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .skills-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    font-size: 0.92rem;
+    color: var(--fg-dim);
+  }
+</style>

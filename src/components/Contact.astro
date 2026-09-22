@@ -1,0 +1,102 @@
+---
+const links = [
+  { label: "Email", value: "avaneesh.bhoite@gmail.com", href: "mailto:avaneesh.bhoite@gmail.com" },
+  { label: "LinkedIn", value: "in/avaneesh-bhoite", href: "https://www.linkedin.com/in/avaneesh-bhoite/" },
+  { label: "GitHub", value: "Avaneesh122", href: "https://github.com/Avaneesh122" },
+  { label: "Resume", value: "resume.pdf", href: "/resume.pdf" },
+];
+---
+
+<section id="contact" class="contact shell">
+  <div class="edge-pad contact-inner">
+    <span class="section-label">05 / Contact</span>
+    <h2 class="contact-headline">
+      Let's build something<br />that has to actually work.
+    </h2>
+    <div class="contact-links mono">
+      {links.map((l, i) => (
+        <a class="contact-link" href={l.href} target={l.href.startsWith("http") || l.href.endsWith(".pdf") ? "_blank" : undefined} rel="noreferrer">
+          <span class="cl-index">{String(i + 1).padStart(2, "0")}</span>
+          <span class="cl-label">{l.label}</span>
+          <span class="cl-value">{l.value}</span>
+          <span class="cl-arrow">→</span>
+        </a>
+      ))}
+    </div>
+  </div>
+  <div class="rule"></div>
+</section>
+
+<style>
+  .contact {
+    padding-top: clamp(3.5rem, 8vw, 6rem);
+  }
+
+  .contact-inner {
+    padding-bottom: clamp(3rem, 7vw, 5rem);
+  }
+
+  .contact-headline {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.9rem, 5vw, 3.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 1.4rem 0 3rem;
+    max-width: 18ch;
+  }
+
+  .contact-links {
+    border-top: 1px solid var(--line);
+  }
+
+  .contact-link {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr auto 1.6rem;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.15rem 0;
+    text-decoration: none;
+    color: var(--fg);
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9rem;
+    transition: color 0.15s ease, padding-left 0.15s ease;
+  }
+
+  .contact-link:hover {
+    color: var(--accent);
+    padding-left: 0.5rem;
+  }
+
+  .cl-index {
+    color: var(--fg-faint);
+    font-size: 0.78rem;
+  }
+
+  .cl-label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    color: var(--fg-dim);
+  }
+
+  .cl-value {
+    justify-self: end;
+    color: inherit;
+    font-size: 0.9rem;
+  }
+
+  .cl-arrow {
+    justify-self: end;
+    color: var(--fg-faint);
+  }
+
+  @media (max-width: 560px) {
+    .contact-link {
+      grid-template-columns: 1.6rem 1fr 1.4rem;
+    }
+    .cl-value {
+      display: none;
+    }
+  }
+</style>

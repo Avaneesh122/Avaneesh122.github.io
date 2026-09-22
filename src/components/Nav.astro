@@ -1,0 +1,100 @@
+---
+const links = [
+  { href: "#work", label: "Work" },
+  { href: "#experience", label: "Experience" },
+  { href: "#about", label: "About" },
+  { href: "#contact", label: "Contact" },
+];
+---
+
+<header class="nav-wrap">
+  <div class="shell">
+    <nav class="nav edge-pad">
+      <a href="#top" class="nav-mark mono">AB /</a>
+      <ul class="nav-links mono">
+        {links.map((l) => (
+          <li><a href={l.href}>{l.label}</a></li>
+        ))}
+      </ul>
+      <a class="nav-status mono" href="https://github.com/Avaneesh122" target="_blank" rel="noreferrer">
+        <span class="dot"></span> github.com/avaneesh122
+      </a>
+    </nav>
+  </div>
+  <div class="rule"></div>
+</header>
+
+<style>
+  .nav-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10, 11, 9, 0.86);
+    backdrop-filter: blur(8px);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    gap: 1.5rem;
+  }
+
+  .nav-mark {
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color: var(--fg);
+    font-weight: 500;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: clamp(1rem, 2.4vw, 2.2rem);
+    margin: 0;
+    padding: 0;
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--fg-dim);
+    transition: color 0.15s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--accent);
+  }
+
+  .nav-status {
+    font-size: 0.72rem;
+    color: var(--fg-dim);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    white-space: nowrap;
+  }
+
+  .nav-status:hover {
+    color: var(--fg);
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  @media (max-width: 720px) {
+    .nav-status,
+    .nav-links {
+      display: none;
+    }
+  }
+</style>
