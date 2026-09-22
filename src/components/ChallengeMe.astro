@@ -13,6 +13,7 @@ interface Game {
   href: string | null;
   copyValue: string | null;
   rank: Rank | null;
+  liveStats: "clash-royale" | null;
 }
 
 const RANK_COLORS: Record<string, string> = {
@@ -64,6 +65,7 @@ const games: Game[] = [
     href: "https://link.clashroyale.com/invite/friend/en?tag=2LUQ22P2C&token=axtw3twa&platform=iOS&m=0",
     copyValue: null,
     rank: null,
+    liveStats: "clash-royale",
   },
   {
     name: "Yu-Gi-Oh! Master Duel",
@@ -74,6 +76,7 @@ const games: Game[] = [
     href: null,
     copyValue: "683-920-814",
     rank: { name: "Diamond", division: 4 },
+    liveStats: null,
   },
 ];
 ---
@@ -116,6 +119,22 @@ const games: Game[] = [
               <span class="rank-text">
                 {g.rank.name} {toRoman(g.rank.division)}
               </span>
+            </span>
+          </div>
+        )}
+        {g.liveStats === "clash-royale" && (
+          <div class="rank-row" id="cr-stats" data-state="loading">
+            <svg class="rank-badge" viewBox="0 0 64 64" aria-hidden="true" style="--gem: var(--accent)">
+              <circle cx="32" cy="32" r="30" class="rb-outer" />
+              <path
+                class="rb-trophy"
+                d="M22 14h20v6a10 10 0 0 1-20 0zM22 16h-6v3a6 6 0 0 0 6 5zM42 16h6v3a6 6 0 0 1-6 5zM30 33h4v5h-4zM24 40h16l-2 4H26z"
+              />
+            </svg>
+            <span class="rank-meta">
+              <span class="rank-label mono">Live · Ranked Ladder</span>
+              <span class="rank-text" id="cr-trophies">—</span>
+              <span class="cr-arena mono" id="cr-arena"></span>
             </span>
           </div>
         )}
@@ -278,6 +297,23 @@ const games: Game[] = [
     color: var(--fg);
   }
 
+  .rb-trophy {
+    fill: var(--gem);
+  }
+
+  .cr-arena {
+    font-size: 0.72rem;
+    color: var(--fg-dim);
+  }
+
+  #cr-stats[data-state="loading"] .rank-text {
+    color: var(--fg-faint);
+  }
+
+  #cr-stats[data-state="error"] {
+    display: none;
+  }
+
   .g-cta {
     align-self: flex-start;
   }
@@ -305,6 +341,33 @@ const games: Game[] = [
 </style>
 
 <script>
+  async function loadClashRoyaleStats() {
+    const root = document.getElementById("cr-stats");
+    const trophiesEl = document.getElementById("cr-trophies");
+    const arenaEl = document.getElementById("cr-arena");
+    if (!root || !trophiesEl || !arenaEl) return;
+
+    try {
+      const res = await fetch("/clash-royale.json", { cache: "no-store" });
+      const data = await res.json();
+
+      if (typeof data.trophies !== "number") {
+        // Stats file exists but the scheduled Action hasn't populated it yet.
+        root.dataset.state = "error";
+        return;
+      }
+
+      trophiesEl.textContent = `${data.trophies.toLocaleString()} trophies`;
+      arenaEl.textContent = data.arenaName ? data.arenaName : "";
+      root.dataset.state = "ready";
+    } catch {
+      root.dataset.state = "error";
+    }
+  }
+
+  loadClashRoyaleStats();
+  setInterval(loadClashRoyaleStats, 5 * 60 * 1000);
+
   document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
     const value = btn.dataset.copy;
     const label = btn.dataset.copyLabel ?? btn.textContent ?? "Copy";

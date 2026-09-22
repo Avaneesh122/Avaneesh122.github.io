@@ -1,0 +1,40 @@
+name: Update Clash Royale stats
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clash-royale-stats
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Fetch stats
+        env:
+          CR_API_TOKEN: ${{ secrets.CR_API_TOKEN }}
+        run: node scripts/fetch-clash-royale.mjs
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- public/clash-royale.json; then
+            git add public/clash-royale.json
+            git commit -m "Update Clash Royale stats"
+            git push
+          else
+            echo "No change in stats, skipping commit."
+          fi
