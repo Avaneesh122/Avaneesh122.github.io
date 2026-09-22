@@ -152,13 +152,15 @@ const DISCORD_ID = "527754865540202498";
 </style>
 
 <script define:vars={{ DISCORD_ID }}>
-  const POLL_MS = 20000;
+  const POLL_MS = 15000;
 
   const trackEl = document.getElementById("np-track");
   const songEl = document.getElementById("np-song");
   const artistEl = document.getElementById("np-artist");
   const artEl = document.getElementById("np-art");
   const eqEl = document.getElementById("np-eq");
+
+  let expiryTimer = null;
 
   async function refresh() {
     if (!trackEl || !songEl || !artistEl || !artEl || !eqEl) return;
@@ -170,8 +172,15 @@ const DISCORD_ID = "527754865540202498";
       if (!json.success) throw new Error("lanyard request failed");
 
       const data = json.data;
-      if (data.listening_to_spotify && data.spotify) {
-        const { song, artist, album_art_url, track_id } = data.spotify;
+      const sp = data.spotify;
+      // Discord's own Spotify presence can lag a track ending by a couple of
+      // minutes. Once the track's declared end time has passed, stop trusting
+      // the "still listening" flag and go idle locally instead of waiting on
+      // Discord/Lanyard to catch up.
+      const stillWithinTrack = sp ? Date.now() < sp.timestamps.end : false;
+
+      if (data.listening_to_spotify && sp && stillWithinTrack) {
+        const { song, artist, album_art_url, track_id, timestamps } = sp;
         songEl.textContent = song;
         artistEl.textContent = artist;
         artEl.src = album_art_url;
@@ -179,6 +188,14 @@ const DISCORD_ID = "527754865540202498";
         trackEl.href = `https://open.spotify.com/track/${track_id}`;
         trackEl.classList.remove("np-idle");
         eqEl.classList.add("is-live");
+
+        // Fire an extra refresh right when the track should end, so the
+        // widget flips to idle promptly instead of waiting up to POLL_MS.
+        if (expiryTimer) clearTimeout(expiryTimer);
+        const msUntilEnd = timestamps.end - Date.now() + 500;
+        if (msUntilEnd > 0 && msUntilEnd < 30 * 60 * 1000) {
+          expiryTimer = setTimeout(refresh, msUntilEnd);
+        }
       } else {
         setIdle();
       }
@@ -188,6 +205,10 @@ const DISCORD_ID = "527754865540202498";
   }
 
   function setIdle() {
+    if (expiryTimer) {
+      clearTimeout(expiryTimer);
+      expiryTimer = null;
+    }
     if (!trackEl || !songEl || !artistEl || !artEl || !eqEl) return;
     songEl.textContent = "Not listening right now";
     artistEl.textContent = "";
