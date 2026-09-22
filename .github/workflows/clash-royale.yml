@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: clash-royale-stats
@@ -42,6 +43,7 @@ jobs:
         run: node scripts/fetch-clash-royale.mjs
 
       - name: Commit if changed
+        id: commit
         if: steps.check.outputs.has_token == 'true'
         run: |
           git config user.name "github-actions[bot]"
@@ -50,6 +52,17 @@ jobs:
             git add public/clash-royale.json
             git commit -m "Update Clash Royale stats"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "No change in stats, skipping commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
+
+      # A push made with the default GITHUB_TOKEN doesn't trigger other
+      # workflows (GitHub blocks this to prevent accidental loops), so the
+      # deploy workflow has to be kicked off explicitly here.
+      - name: Trigger site redeploy
+        if: steps.check.outputs.has_token == 'true' && steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy.yml --ref master
